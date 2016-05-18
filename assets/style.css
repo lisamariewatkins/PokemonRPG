@@ -17,11 +17,19 @@ header{
 	background-color: #F0FFFF;
 	margin: auto;
 	width: 80%;
+	text-align: center;
 }
 
 #selectPlayer{
 	text-align: center;
 	margin-top:50px;
+	width: 80%;
+	margin: 0 auto;
+}
+
+#playerList{
+	text-align: center;
+	margin: 0 auto;
 }
 
 .characterImage{
@@ -32,6 +40,17 @@ header{
 	border-radius: 5px;
 }
 
+.characterBin{
+	display: inline-block;
+	text-align: center;
+}
+
+
+p{
+	position: relative;
+}
+
 #enemies{
 	text-align: center;
+	margin: 0 auto;
 }
