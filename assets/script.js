@@ -4,7 +4,7 @@ var pickedHero = false;
 
 var opponents;
 
-var opponentsLeft = 4;
+var opponentsLeft = 3;
 
 var opponent;
 
@@ -12,13 +12,16 @@ var heroId;
 
 var opponentId;
 
+var rounds = 1;
+
 //character array
 var playerArray = [
 {
 	name: "charmander",
 	img: "assets/img/charmander.png",
-	hpunchanged: 300,
+	hpunchanged: 300, //hp unchanged -
 	healthPoints: 300,
+	ogAttackPoints: 4, //original G health points - to use when increasing player's power
 	attackPoints: 4,
 	counterAttackPoints: 15
 },
@@ -28,6 +31,7 @@ var playerArray = [
 	img: "assets/img/pikachu.png",
 	hpunchanged: 250,
 	healthPoints: 250,
+	ogAttackPoints: 8,
 	attackPoints: 8,
 	counterAttackPoints: 25
 },
@@ -37,6 +41,7 @@ var playerArray = [
 	img: "assets/img/meowth.png",
 	hpunchanged: 200,
 	healthPoints: 200,
+	ogAttackPoints: 16,
 	attackPoints: 16,
 	counterAttackPoints: 30
 },
@@ -46,6 +51,7 @@ var playerArray = [
 	img: "assets/img/squirtle.png",
 	hpunchanged: 150,
 	healthPoints: 150,
+	ogAttackPoints: 40,
 	attackPoints: 40,
 	counterAttackPoints: 40
 }];
@@ -71,12 +77,12 @@ function heroClick(){
 function enemyClick(){
 	$(".opponents").on('click', function(){
 		if (!pickedOpponent){
-			$("#instructions").html("");
 			$(this).addClass("currentOpponent")
 			opponentId = $(this).attr("Id");
 			opponent = $(this).detach();
 			$("#currentOpponent").append(opponent);
 			opponentsLeft--;
+			$("#instructions").html("");
 		}
 		pickedOpponent = true;
 	});
@@ -84,21 +90,36 @@ function enemyClick(){
 
 function attackButtonClick(){
 	$("#attackButton").on('click', function(){
-		if (pickedOpponent == true){
-			playerArray[heroId].AttackPoints += playerArray[heroId].AttackPoints;
+		playerArray[heroId].attackPoints = playerArray[heroId].ogAttackPoints * rounds;
+		if (pickedOpponent == true && playerArray[heroId].healthPoints > 0 && playerArray[opponentId].healthPoints > 0){
 			playerArray[heroId].healthPoints = playerArray[heroId].healthPoints - playerArray[opponentId].counterAttackPoints;
-			playerArray[opponentId].healthPoints = playerArray[opponentId].healthPoints - playerArray[heroId].AttackPoints;
+			playerArray[opponentId].healthPoints = playerArray[opponentId].healthPoints - playerArray[heroId].attackPoints;
 			$("#yourHero .health").html("Health: " + playerArray[heroId].healthPoints);
 			$("#currentOpponent .health").html("Health: " + playerArray[opponentId].healthPoints);
+			rounds++;
 
-			if (playerArray[heroId].healthPoints < 0){
-				alert("You've lost");
+			if (playerArray[heroId].healthPoints < 0 && playerArray[opponentId].healthPoints < 0){
+				if (playerArray[heroId].healthPoints < playerArray[opponentId].healthPoints){
+					alert("You've lost! Click the reset button to play again.")
+				}
+				else{
+					alert("You've won! Press reset to play again.")
+				}
 			}
 
-			if (playerArray[opponentId].healthPoints < 0){
+			if (playerArray[heroId].healthPoints < 0 && playerArray[opponentId].healthPoints > 0){
+				alert("You've lost! Click the reset button to play again.");
+			}
+
+			if (playerArray[opponentId].healthPoints < 0 && playerArray[heroId].healthPoints > 0){
 				alert("You've won this round!");
 				$("#currentOpponent").empty();
-				$("#instructions").html("Pick your next opponent!");
+				if (opponentsLeft > 0){
+					$("#instructions").html("Pick your next opponent!");
+				}
+				if (opponentsLeft == 0){
+					$("#instructions").html("Congratulations! You've won! Press reset to play again.")
+				}
 				pickedOpponent = false;
 			}
 		};
@@ -128,9 +149,7 @@ $(document).ready(function(){
 		heroClick();
 		pickedOpponent = false;
 		pickedHero = false;
+		rounds = 1;
 	});
 
-	if (opponentsLeft == 0){
-		$("#instructions").html("Congratulations! You've won! Press reset to play again!");
-	}
 });

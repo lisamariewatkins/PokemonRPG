@@ -1,5 +1,6 @@
 body{
 	background-image: url(img/bg.jpg);
+	font-family: 'Gloria Hallelujah', cursive;
 }
 
 header{
@@ -30,6 +31,11 @@ header{
 #playerList{
 	text-align: center;
 	margin: 0 auto;
+	border-top: solid 5px #72c5f7;
+	border-right: solid 5px #72c5f7;
+	border-left: solid 5px #72c5f7;
+	border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
 }
 
 .characterImage{
@@ -50,7 +56,20 @@ p{
 	position: relative;
 }
 
+#instructions{
+	padding: 25px;
+}
+
 #enemies{
 	text-align: center;
 	margin: 0 auto;
+}
+
+#gameContent{
+	padding: 25px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	border-bottom: solid 5px #72c5f7;
+	border-right: solid 5px #72c5f7;
+	border-left: solid 5px #72c5f7;
 }
